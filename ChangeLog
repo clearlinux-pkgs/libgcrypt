@@ -1,3 +1,54 @@
+2016-02-09  Werner Koch  <wk@gnupg.org>
+
+	Release 1.6.5.
+	* configure.ac: Set LT version to C20/A0/R5.
+
+2016-02-08  NIIBE Yutaka  <gniibe@fsij.org>
+
+	ecc: Constant-time multiplication for Weierstrass curve.
+	* mpi/ec.c (_gcry_mpi_ec_mul_point): Use simple left-to-right binary
+	method for Weierstrass curve when SCALAR is secure.
+
+	ecc: minor improvement of point multiplication.
+	* mpi/ec.c (_gcry_mpi_ec_mul_point): Move ec_subm out of the loop.
+
+	ecc: input validation on ECDH.
+	* cipher/ecc.c (ecc_decrypt_raw): Validate the point.
+
+2015-10-15  NIIBE Yutaka  <gniibe@fsij.org>
+
+	Fix double free on error.
+	* src/hmac256.c (_gcry_hmac256_finalize): Don't free HD.
+
+2015-10-14  NIIBE Yutaka  <gniibe@fsij.org>
+
+	Fix gpg_error_t and gpg_err_code_t confusion.
+	* src/gcrypt-int.h (_gcry_sexp_extract_param): Revert the change.
+	* cipher/dsa.c (dsa_check_secret_key): Ditto.
+	* src/sexp.c (_gcry_sexp_extract_param): Return gpg_err_code_t.
+
+	* src/gcrypt-int.h (_gcry_err_make_from_errno)
+	(_gcry_error_from_errno): Return gpg_error_t.
+	* cipher/cipher.c (_gcry_cipher_open_internal)
+	(_gcry_cipher_ctl, _gcry_cipher_ctl): Don't use gcry_error.
+	* src/global.c (_gcry_vcontrol): Likewise.
+	* cipher/ecc-eddsa.c (_gcry_ecc_eddsa_genkey): Use
+	 gpg_err_code_from_syserror.
+	* cipher/mac.c (mac_reset, mac_setkey, mac_setiv, mac_write)
+	(mac_read, mac_verify): Return gcry_err_code_t.
+	* cipher/rsa-common.c (mgf1): Use gcry_err_code_t for ERR.
+	* src/visibility.c (gcry_error_from_errno): Return gpg_error_t.
+
+2015-10-13  NIIBE Yutaka  <gniibe@fsij.org>
+
+	Fix declaration of return type.
+	* src/gcrypt-int.h (_gcry_sexp_extract_param): Return gpg_error_t.
+	(_gcry_mpi_ec_new, _gcry_mpi_ec_set_mpi, _gcry_mpi_ec_set_point):
+	Remove.
+	* cipher/dsa.c (dsa_generate): Fix call to _gcry_sexp_extract_param.
+	* src/g10lib.h (_gcry_vcontrol): Return gcry_err_code_t.
+	* src/visibility.c (gcry_mpi_snatch): Fix call to _gcry_mpi_snatch.
+
 2015-09-08  Werner Koch  <wk@gnupg.org>
 
 	Release 1.6.4.
