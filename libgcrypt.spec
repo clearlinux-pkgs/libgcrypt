@@ -4,7 +4,7 @@
 #
 Name     : libgcrypt
 Version  : 1.7.1
-Release  : 12
+Release  : 13
 URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.1.tar.bz2
 Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.1.tar.bz2
 Summary  : No detailed summary available
@@ -60,7 +60,7 @@ lib components for the libgcrypt package.
 
 %build
 export LANG=C
-%configure --disable-static
+%configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20"
 make V=1  %{?_smp_mflags}
 
 %install
