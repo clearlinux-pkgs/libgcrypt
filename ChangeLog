@@ -1,3 +1,118 @@
+2016-07-14  Werner Koch  <wk@gnupg.org>
+
+	Release 1.7.2.
+	* configure.ac: Set LT version to C21/A1/R2.
+	* Makefile.am (distcheck-hook): New.
+
+2016-07-13  Werner Koch  <wk@gnupg.org>
+
+	build: Update config.{guess,sub} to {2016-05-15,2016-06-20}.
+	* build-aux/config.guess: Update.
+	* build-aux/config.sub: Update.
+
+2016-07-08  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Fix unaligned accesses with ldm/stm in ChaCha20 and Poly1305 ARM/NEON.
+	* cipher/chacha20-armv7-neon.S (UNALIGNED_STMIA8)
+	(UNALIGNED_LDMIA4): New.
+	(_gcry_chacha20_armv7_neon_blocks): Use new helper macros instead of
+	ldm/stm instructions directly.
+	* cipher/poly1305-armv7-neon.S (UNALIGNED_LDMIA2)
+	(UNALIGNED_LDMIA4): New.
+	(_gcry_poly1305_armv7_neon_init_ext, _gcry_poly1305_armv7_neon_blocks)
+	(_gcry_poly1305_armv7_neon_finish_ext): Use new helper macros instead
+	of ldm instruction directly.
+
+2016-07-03  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	bench-slope: add unaligned buffer mode.
+	* tests/bench-slope.c (unaligned_mode): New.
+	(do_slope_benchmark): Unalign buffer if in unaligned mode enabled.
+	(print_help, main): Add '--unaligned' parameter.
+
+2016-07-01  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Fix static build.
+	* tests/pubkey.c (_gcry_pk_util_get_nbits): Make function 'static'.
+
+2016-06-30  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Disallow encryption/decryption if key is not set.
+	* cipher/cipher.c (cipher_encrypt, cipher_decrypt): If mode is not
+	NONE, make sure that key is set.
+	* cipher/cipher-ccm.c (_gcry_cipher_ccm_set_nonce): Do not clear
+	'marks.key' when reseting state.
+
+	Avoid unaligned accesses with ARM ldm/stm instructions.
+	* cipher/rijndael-arm.S: Remove __ARM_FEATURE_UNALIGNED ifdefs, always
+	compile with unaligned load/store code paths.
+	* cipher/sha512-arm.S: Ditto.
+
+	Fix non-PIC reference in PIC for poly1305/ARMv7-NEON.
+	* cipher/poly1305-armv7-neon.S (GET_DATA_POINTER): New.
+	(_gcry_poly1305_armv7_neon_init_ext): Use GET_DATA_POINTER.
+
+	Fix wrong CPU feature #ifdef for SHA1/AVX.
+	* cipher/sha1-avx-amd64.S: Check for HAVE_GCC_INLINE_ASM_AVX instead of
+	HAVE_GCC_INLINE_ASM_AVX2 & HAVE_GCC_INLINE_ASM_BMI2.
+
+2016-06-30  Werner Koch  <wk@gnupg.org>
+
+	random: Remove debug message about not supported getrandom syscall.
+	* random/rndlinux.c (_gcry_rndlinux_gather_random): Remove log_debug
+	for getrandom error ENOSYS.
+
+2016-06-27  Werner Koch  <wk@gnupg.org>
+
+	tests: Do not test SHAKE128 et al with gcry_md_hash_buffer.
+	* tests/benchmark.c (md_bench): Do not test variable lengths algos
+	with the gcry_md_hash_buffer.
+
+	md: Improve diagnostic when using SHAKE128 with gcry_md_hash_buffer.
+	* cipher/md.c (md_read): Detect missing read function.
+	(_gcry_md_hash_buffers): Return an error.
+
+2016-06-25  Werner Koch  <wk@gnupg.org>
+
+	ecc: Fix memory leak.
+	* cipher/ecc.c (ecc_check_secret_key): Do not init point if already
+	set.
+
+	doc: Update yat2m.
+	* doc/yat2m.c: Update from Libgpg-error
+
+	tests: Add attributes to helper functions.
+	* tests/t-common.h (die, fail, info): Add attributes.
+	* tests/random.c (die, inf): Ditto.
+	* tests/pubkey.c (die, fail, info): Add attributes.
+	* tests/fipsdrv.c (die): Add attribute.
+	(main): Take care of missing --key,--iv,--dt options.
+
+	Improve robustness and help lint.
+	* cipher/rsa.c (rsa_encrypt): Check for !DATA.
+	* cipher/md.c (search_oid): Check early for !OID.
+	(md_copy): Use gpg_err_code_from_syserror.  Replace chains of if(!err)
+	tests.
+	* cipher/cipher.c (search_oid): Check early for !OID.
+	* src/misc.c (do_printhex): Allow for BUFFER==NULL even with LENGTH>0.
+	* mpi/mpicoder.c (onecompl): Allow for A==NULL to help static
+	analyzers.
+
+	cipher: Improve fatal error message for bad use of gcry_md_read.
+	* cipher/md.c (md_read): Use _gcry_fatal_error instead of BUG.
+
+2016-06-16  Niibe Yutaka  <gniibe@fsij.org>
+
+	ecc: Default cofactor 1 for PUBKEY_FLAG_PARAM.
+	* cipher/ecc.c (ecc_check_secret_key, ecc_sign, ecc_verify)
+	(ecc_encrypt_raw, ecc_decrypt_raw, compute_keygrip): Set default
+	cofactor as 1, when not specified.
+
+	ecc: Default cofactor 1 for PUBKEY_FLAG_PARAM.
+	* cipher/ecc.c (ecc_check_secret_key, ecc_sign, ecc_verify)
+	(ecc_encrypt_raw, ecc_decrypt_raw, compute_keygrip): Set default
+	cofactor as 1, when not specified.
+
 2016-06-15  Werner Koch  <wk@gnupg.org>
 
 	Release 1.7.1.
