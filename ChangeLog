@@ -1,3 +1,106 @@
+2016-08-17  Werner Koch  <wk@gnupg.org>
+
+	Release 1.7.3.
+	* configure.ac: Set LT version to C21/A1/R3.
+
+	random: Hash continuous areas in the csprng pool.
+	* random/random-csprng.c (mix_pool): Store the first hash at the end
+	of the pool.
+
+	random: Improve the diagram showing the random mixing.
+	* random/random-csprng.c (mix_pool): Use DIGESTLEN instead of 20.
+
+2016-07-19  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	crc-intel-pclmul: split assembly block to ease register pressure.
+	* cipher/crc-intel-pclmul.c (crc32_less_than_16): Split inline
+	assembly block handling 4 byte input into multiple blocks.
+
+	rijndael-aesni: split assembly block to ease register pressure.
+	* cipher/rijndael-aesni.c (do_aesni_ctr_4): Use single register
+	constraint for passing 'bige_addb' to assembly block; split
+	first inline assembly block into two parts.
+
+2016-07-14  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Add ARMv8/AArch32 Crypto Extension implementation of AES.
+	* cipher/Makefile.am: Add 'rijndael-armv8-ce.c' and
+	'rijndael-armv-aarch32-ce.S'.
+	* cipher/rijndael-armv8-aarch32-ce.S: New.
+	* cipher/rijndael-armv8-ce.c: New.
+	* cipher/rijndael-internal.h (USE_ARM_CE): New.
+	(RIJNDAEL_context_s): Add 'use_arm_ce'.
+	* cipher/rijndael.c [USE_ARM_CE] (_gcry_aes_armv8_ce_setkey)
+	(_gcry_aes_armv8_ce_prepare_decryption)
+	(_gcry_aes_armv8_ce_encrypt, _gcry_aes_armv8_ce_decrypt)
+	(_gcry_aes_armv8_ce_cfb_enc, _gcry_aes_armv8_ce_cbc_enc)
+	(_gcry_aes_armv8_ce_ctr_enc, _gcry_aes_armv8_ce_cfb_dec)
+	(_gcry_aes_armv8_ce_cbc_dec, _gcry_aes_armv8_ce_ocb_crypt)
+	(_gcry_aes_armv8_ce_ocb_auth): New.
+	(do_setkey) [USE_ARM_CE]: Add ARM CE/AES HW feature check and key
+	setup for ARM CE.
+	(prepare_decryption, _gcry_aes_cfb_enc, _gcry_aes_cbc_enc)
+	(_gcry_aes_ctr_enc, _gcry_aes_cfb_dec, _gcry_aes_cbc_dec)
+	(_gcry_aes_ocb_crypt, _gcry_aes_ocb_auth) [USE_ARM_CE]: Add
+	ARM CE support.
+	* configure.ac: Add 'rijndael-armv8-ce.lo' and
+	'rijndael-armv8-aarch32-ce.lo'.
+
+	Add ARMv8/AArch32 Crypto Extension implementation of GCM.
+	* cipher/Makefile.am: Add 'cipher-gcm-armv8-aarch32-ce.S'.
+	* cipher/cipher-gcm-armv8-aarch32-ce.S: New.
+	* cipher/cipher-gcm.c [GCM_USE_ARM_PMULL]
+	(_gcry_ghash_setup_armv8_ce_pmull, _gcry_ghash_armv8_ce_pmull)
+	(ghash_setup_armv8_ce_pmull, ghash_armv8_ce_pmull): New.
+	(setupM) [GCM_USE_ARM_PMULL]: Enable ARM PMULL implementation if
+	HWF_ARM_PULL HW feature flag is enabled.
+	* cipher/cipher-gcm.h (GCM_USE_ARM_PMULL): New.
+
+	Add ARMv8/AArch32 Crypto Extension implemenation of SHA-256.
+	* cipher/Makefile.am: Add 'sha256-armv8-aarch32-ce.S'.
+	* cipher/sha256-armv8-aarch32-ce.S: New.
+	* cipher/sha256.c (USE_ARM_CE): New.
+	(sha256_init, sha224_init): Check features for HWF_ARM_SHA1.
+	[USE_ARM_CE] (_gcry_sha256_transform_armv8_ce): New.
+	(transform) [USE_ARM_CE]: Use ARMv8 CE implementation if HW supports.
+	(SHA256_CONTEXT): Add 'use_arm_ce'.
+	* configure.ac: Add 'sha256-armv8-aarch32-ce.lo'.
+
+	Add ARMv8/AArch32 Crypto Extension implementation of SHA-1.
+	* cipher/Makefile.am: Add 'sha1-armv8-aarch32-ce.S'.
+	* cipher/sha1-armv7-neon.S (_gcry_sha1_transform_armv7_neon): Add
+	missing size.
+	* cipher/sha1-armv8-aarch32-ce.S: New.
+	* cipher/sha1.c (USE_ARM_CE): New.
+	(sha1_init): Check features for HWF_ARM_SHA1.
+	[USE_ARM_CE] (_gcry_sha1_transform_armv8_ce): New.
+	(transform) [USE_ARM_CE]: Use ARMv8 CE implementation if HW supports
+	it.
+	* cipher/sha1.h (SHA1_CONTEXT): Add 'use_arm_ce'.
+	* configure.ac: Add 'sha1-armv8-aarch32-ce.lo'.
+
+	Add HW feature check for ARMv8 AArch64 and crypto extensions.
+	* configure.ac: Add '--disable-arm-crypto-support'; enable hwf-arm
+	module on 64-bit ARM.
+	(armcryptosupport, gcry_cv_gcc_inline_aarch32_crypto)
+	(gcry_cv_inline_asm_aarch64_neon)
+	(gcry_cv_gcc_inline_asm_aarch64_crypto): New.
+	* src/g10lib.h (HWF_ARM_AES, HWF_ARM_SHA1, HWF_ARM_SHA2)
+	(HWF_ARM_PMULL): New.
+	* src/hwf-arm.c [__aarch64__]: Enable building in AArch64 mode.
+	(feature_map_s): New.
+	[__arm__] (AT_HWCAP, AT_HWCAP2, HWCAP2_AES, HWCAP2_PMULL)
+	(HWCAP2_SHA1, HWCAP2_SHA2, arm_features): New.
+	[__aarch64__] (AT_HWCAP, AT_HWCAP2, HWCAP_ASIMD, HWCAP_AES)
+	(HWCAP_PMULL, HWCAP_SHA1, HWCAP_SHA2, arm_features): New.
+	(get_hwcap): Add reading of 'AT_HWCAP2'; Change auxv use
+	'unsigned long'.
+	(detect_arm_at_hwcap): Add mapping of HWCAP/HWCAP2 to HWF flags.
+	(detect_arm_proc_cpuinfo): Add mapping of CPU features to HWF flags.
+	(_gcry_hwf_detect_arm): Use __ARM_NEON instead of legacy __ARM_NEON__.
+	* src/hwfeatures.c (hwflist): Add 'arm-aes', 'arm-sha1', 'arm-sha2'
+	and 'arm-pmull'.
+
 2016-07-14  Werner Koch  <wk@gnupg.org>
 
 	Release 1.7.2.
