@@ -4,7 +4,7 @@
 #
 Name     : libgcrypt
 Version  : 1.7.3
-Release  : 16
+Release  : 17
 URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.3.tar.bz2
 Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.3.tar.bz2
 Summary  : No detailed summary available
@@ -14,6 +14,7 @@ Requires: libgcrypt-bin
 Requires: libgcrypt-lib
 Requires: libgcrypt-doc
 BuildRequires : libgpg-error-dev
+BuildRequires : libgpg-error-dev32
 
 %description
 Libgcrypt - The GNU Crypto Library
