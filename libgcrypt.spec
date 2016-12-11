@@ -4,7 +4,7 @@
 #
 Name     : libgcrypt
 Version  : 1.7.3
-Release  : 15
+Release  : 16
 URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.3.tar.bz2
 Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.3.tar.bz2
 Summary  : No detailed summary available
@@ -80,7 +80,7 @@ rm -rf %{buildroot}
 %files dev
 %defattr(-,root,root,-)
 /usr/include/*.h
-/usr/lib64/*.so
+/usr/lib64/libgcrypt.so
 /usr/share/aclocal/*.m4
 
 %files doc
@@ -90,4 +90,5 @@ rm -rf %{buildroot}
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/*.so.*
+/usr/lib64/libgcrypt.so.20
+/usr/lib64/libgcrypt.so.20.1.3
