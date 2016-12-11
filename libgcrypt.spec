@@ -4,7 +4,7 @@
 #
 Name     : libgcrypt
 Version  : 1.7.3
-Release  : 17
+Release  : 18
 URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.3.tar.bz2
 Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.3.tar.bz2
 Summary  : No detailed summary available
@@ -13,6 +13,11 @@ License  : BSD-3-Clause GPL-2.0 LGPL-2.0+ LGPL-2.1
 Requires: libgcrypt-bin
 Requires: libgcrypt-lib
 Requires: libgcrypt-doc
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : libgpg-error-dev
 BuildRequires : libgpg-error-dev32
 
@@ -40,6 +45,16 @@ Provides: libgcrypt-devel
 dev components for the libgcrypt package.
 
 
+%package dev32
+Summary: dev32 components for the libgcrypt package.
+Group: Default
+Requires: libgcrypt-lib32
+Requires: libgcrypt-bin
+
+%description dev32
+dev32 components for the libgcrypt package.
+
+
 %package doc
 Summary: doc components for the libgcrypt package.
 Group: Documentation
@@ -56,16 +71,42 @@ Group: Libraries
 lib components for the libgcrypt package.
 
 
+%package lib32
+Summary: lib32 components for the libgcrypt package.
+Group: Default
+
+%description lib32
+lib32 components for the libgcrypt package.
+
+
 %prep
 %setup -q -n libgcrypt-1.7.3
+pushd ..
+cp -a libgcrypt-1.7.3 build32
+popd
 
 %build
 export LANG=C
 %configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20" --disable-large-data-tests
 make V=1  %{?_smp_mflags}
 
+pushd ../build32/
+export CFLAGS="$CFLAGS -m32"
+export CXXFLAGS="$CXXFLAGS -m32"
+%configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20" --disable-large-data-tests --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make V=1  %{?_smp_mflags}
+popd
 %install
 rm -rf %{buildroot}
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do mv $i 32$i ; done
+popd
+fi
+popd
 %make_install
 
 %files
@@ -84,6 +125,10 @@ rm -rf %{buildroot}
 /usr/lib64/libgcrypt.so
 /usr/share/aclocal/*.m4
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libgcrypt.so
+
 %files doc
 %defattr(-,root,root,-)
 %doc /usr/share/info/*
@@ -93,3 +138,8 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 /usr/lib64/libgcrypt.so.20
 /usr/lib64/libgcrypt.so.20.1.3
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libgcrypt.so.20
+/usr/lib32/libgcrypt.so.20.1.3
