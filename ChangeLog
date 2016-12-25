@@ -1,3 +1,247 @@
+2016-12-15  Werner Koch  <wk@gnupg.org>
+
+	Release 1.7.5.
+	* configure.ac: Set LT version to C21/A1/R5.
+
+2016-12-15  Werner Koch  <wk@gnupg.org>
+	    Nicolas Porcel  <nicolasporcel06@gmail.com>
+
+	Fix regression in broken mlock detection.
+	* acinclude.m4 (GNUPG_CHECK_MLOCK): Fix typo EGAIN->EAGAIN.
+
+2016-12-09  Werner Koch  <wk@gnupg.org>
+
+	Release 1.7.4.
+	* configure.ac: Bump LT version to C21/A1/R4.
+
+	Improve handling of mlock error codes.
+	* acinclude.m4 (GNUPG_CHECK_MLOCK): Check also for EAGAIN which is a
+	legitimate return code and does not indicate a broken mlock().
+	* src/secmem.c (lock_pool_pages): Test ERR instead of ERRNO which
+	could have been overwritten by cap_from+text et al.
+
+2016-12-09  Stephan Mueller  <smueller@chronox.de>
+
+	random: Eliminate unneeded memcpy invocations in the DRBG.
+	* random/random-drbg.c (drbg_hash): Remove arg 'outval' and return a
+	pointer instead.
+	(drbg_instantiate): Reduce size of scratchpad.
+	(drbg_hmac_update): Avoid use of scratch buffers for the hash.
+	(drbg_hmac_generate, drbg_hash_df): Ditto.
+	(drbg_hash_process_addtl): Ditto.
+	(drbg_hash_hashgen): Ditto.
+	(drbg_hash_generate): Ditto.
+
+	random: Add performance improvements for the DRBG.
+	* random/random-drbg.c (struct drbg_state_ops_s): New function
+	pointers 'crypto_init' and 'crypto-fini'.
+	(struct drbg_state_s): New fields 'priv_data', 'ctr_handle', and
+	'ctr_null'.
+	(drbg_hash_init, drbg_hash_fini): New.
+	(drbg_hmac_init, drbg_hmac_setkey): New.
+	(drbg_sym_fini, drbg_sym_init, drbg_sym_setkey): New.
+	(drbg_sym_ctr): New.
+	(drbg_ctr_bcc): Set the key.
+	(drbg_ctr_df): Ditto.
+	(drbg_hmac_update): Ditto.
+	(drbg_hmac_generate): Replace drgb_hmac by drbg_hash.
+	(drbg_hash_df): Ditto.
+	(drbg_hash_process_addtl): Ditto.
+	(drbg_hash_hashgen): Ditto.
+	(drbg_ctr_update): Rework.
+	(drbg_ctr_generate): Rework.
+	(drbg_ctr_ops): Init new functions pointers.
+	(drbg_uninstantiate): Call fini function.
+	(drbg_instantiate): Call init function.
+
+	cipher: New function for reading the counter in CTR mode.
+	* cipher/cipher.c (gcry_cipher_getctr): New.
+
+2016-12-07  Werner Koch  <wk@gnupg.org>
+
+	Implement overflow secmem pools for xmalloc style allocators.
+	* src/secmem.c (pooldesc_s): Add fields next, cur_alloced, and
+	cur_blocks.
+	(cur_alloced, cur_blocks): Remove vars.
+	(ptr_into_pool_p): Make it inline.
+	(stats_update): Add arg pool and update the new pool specific
+	counters.
+	(_gcry_secmem_malloc_internal): Add arg xhint and allocate overflow
+	pools as needed.
+	(_gcry_secmem_malloc): Pass XHINTS along.
+	(_gcry_secmem_realloc_internal): Ditto.
+	(_gcry_secmem_realloc): Ditto.
+	(_gcry_secmem_free_internal): Take multiple pools in account.  Add
+	return value to indicate whether the arg was freed.
+	(_gcry_secmem_free): Add return value to indicate whether the arg was
+	freed.
+	(_gcry_private_is_secure): Take multiple pools in account.
+	(_gcry_secmem_term): Release all pools.
+	(_gcry_secmem_dump_stats): Print stats for all pools.
+	* src/stdmem.c (_gcry_private_free): Replace _gcry_private_is_secure
+	test with a direct call of _gcry_secmem_free to avoid double checking.
+
+	Give the secmem allocators a hint when a xmalloc calls them.
+	* src/secmem.c (_gcry_secmem_malloc): New not yet used arg XHINT.
+	(_gcry_secmem_realloc): Ditto.
+	* src/stdmem.c (_gcry_private_malloc_secure): New arg XHINT to be
+	passed to the secmem functions.
+	(_gcry_private_realloc): Ditto.
+	* src/g10lib.h (GCRY_ALLOC_FLAG_XHINT): New.
+	* src/global.c (do_malloc): Pass this flag as XHINT to the private
+	allocator.
+	(_gcry_malloc_secure): Factor code out to ...
+	(_gcry_malloc_secure_core): this.  Add arg XHINT.
+	(_gcry_realloc): Factor code out to ...
+	(_gcry_realloc_core): here.  Add arg XHINT.
+	(_gcry_strdup): Factor code out to ...
+	(_gcry_strdup_core): here.  Add arg XHINT.
+	(_gcry_xrealloc): Use the core function and pass true for XHINT.
+	(_gcry_xmalloc_secure): Ditto.
+	(_gcry_xstrdup): Ditto.
+
+	Reorganize code in secmem.c.
+	* src/secmem.c (pooldesc_t): New type to collect information about one
+	pool.
+	(pool_size): Remove.  Now a member of pooldesc_t.
+	(pool_okay): Ditto.
+	(pool_is_mmapped): Ditto.
+	(pool): Rename variable ...
+	(mainpool): And change type to pooldesc_t.
+	(ptr_into_pool_p): Add arg 'pool'.
+	(mb_get_next): Ditto.
+	(mb_get_prev): Ditto.
+	(mb_merge): Ditto.
+	(mb_get_new): Ditto.
+	(init_pool): Ditto.
+	(lock_pool): Rename to ...
+	(look_pool_pages: this.
+	(secmem_init): Rename to ...
+	(_gcry_secmem_init_internal): this.  Add local var POOL and init with
+	address of MAINPOOL.
+	(_gcry_secmem_malloc_internal): Add local var POOL and init with
+	address of MAINPOOL.
+	(_gcry_private_is_secure): Ditto.
+	(_gcry_secmem_term): Ditto.
+	(_gcry_secmem_dump_stats): Ditto.
+	(_gcry_secmem_free_internal): Ditto.  Remove check for NULL arg.
+	(_gcry_secmem_free): Add check for NULL arg before taking the lock.
+	(_gcry_secmem_realloc): Factor most code out to ...
+	(_gcry_secmem_realloc_internal): this.
+
+2016-11-28  Dmitry Eremin-Solenikov  <dbaryshkov@gmail.com>
+
+	tests: Add PBKDF2 tests for Stribog512.
+	* tests/t-kdf.c (check_pbkdf2): Add Stribog512 test cases from TC26's
+	additions to PKCS#5.
+
+	tests: Add Stribog HMAC tests from TC26ALG.
+	* tests/basic.c (check_mac): add HMAC test vectors from TC26ALG document
+	for Stribog.
+
+	cipher: Add Stribog OIDs from TC26 space.
+	* cipher/stribog.c (oid_spec_stribog256, oid_spec_stribog512): New.
+
+2016-11-28  Justus Winter  <justus@g10code.com>
+
+	tests: Fix memory leak.
+	* tests/basic.c (check_gost28147_cipher): Free cipher handles.
+
+2016-11-25  Dmitry Eremin-Solenikov  <dbaryshkov@gmail.com>
+
+	Cast oid argument of gcry_cipher_set_sbox to disable compiler warning.
+	* src/gcrypt.h.in (gcry_cipher_set_sbox): Cast oid to (void *).
+
+	gost: Rename tc26 s-box from A to Z.
+	* cipher/gost-s-box.c (gost_sboxes): Rename TC26_A to TC26_Z as it is
+	the name that ended up in all standards.
+
+	tests: Add test to verify GOST 28147-89 against known results.
+	* tests/basic.c (check_gost28147_cipher): new test function.
+
+2016-11-17  Dmitry Eremin-Solenikov  <dbaryshkov@gmail.com>
+
+	cipher/gost28147: Fix CryptoPro-B S-BOX.
+	* cipher/gost-s-box.c: CryptoPro_B s-box missed one line, resulting in
+	incorrect encryption/decryption using that s-box.  Add missing data.
+
+2016-11-01  NIIBE Yutaka  <gniibe@fsij.org>
+
+	cipher: Fix IDEA cipher for clearing memory.
+	* cipher/idea.c (invert_key): Use wipememory, since this kind of memset
+	may be removed by compiler optimization.
+
+2016-10-09  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	GCM: Add bulk processing for ARMv8/AArch64 implementation.
+	* cipher/cipher-gcm-armv8-aarch64-ce.S: Add 6 blocks bulk processing.
+
+	GCM: Add bulk processing for ARMv8/AArch32 implementation.
+	* cipher/cipher-gcm-armv8-aarch32-ce.S: Add 4 blocks bulk processing.
+	* tests/basic.c (check_digests): Print correct data length for "?"
+	tests.
+	(check_one_mac): Add large 1000000 bytes tests, when input is "!" or
+	"?".
+	(check_mac): Add "?" tests vectors for HMAC, CMAC, GMAC and POLY1305.
+
+2016-09-11  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Add Aarch64 assembly implementation of Twofish.
+	* cipher/Makefile.am: Add 'twofish-aarch64.S'.
+	* cipher/twofish-aarch64.S: New.
+	* cipher/twofish.c: Enable USE_ARM_ASM if __AARCH64EL__ and
+	HAVE_COMPATIBLE_GCC_AARCH64_PLATFORM_AS defined.
+	* configure.ac [host=aarch64]: Add 'twofish-aarch64.lo'.
+
+2016-09-05  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Add Aarch64 assembly implementation of Camellia.
+	* cipher/Makefile.am: Add 'camellia-aarch64.S'.
+	* cipher/camellia-aarch64.S: New.
+	* cipher/camellia-glue.c [USE_ARM_ASM][__aarch64__]: Set stack burn
+	size to zero.
+	* cipher/camellia.h: Enable USE_ARM_ASM if __AARCH64EL__ and
+	HAVE_COMPATIBLE_GCC_AARCH64_PLATFORM_AS defined.
+	* configure.ac [host=aarch64]: Add 'rijndael-aarch64.lo'.
+
+	Add ARMv8/AArch64 Crypto Extension implementation of AES.
+	* cipher/Makefile.am: Add 'rijndael-armv-aarch64-ce.S'.
+	* cipher/rijndael-armv8-aarch64-ce.S: New.
+	* cipher/rijndael-internal.h (USE_ARM_CE): Enable for ARMv8/AArch64.
+	* configure.ac: Add 'rijndael-armv-aarch64-ce.lo' and
+	'rijndael-armv8-ce.lo' for ARMv8/AArch64.
+
+	Add ARMv8/AArch64 Crypto Extension implementation of GCM.
+	* cipher/Makefile.am: Add 'cipher-gcm-armv8-aarch64-ce.S'.
+	* cipher/cipher-gcm-armv8-aarch64-ce.S: New.
+	* cipher/cipher-internal.h (GCM_USE_ARM_PMULL): Enable on
+	ARMv8/AArch64.
+
+	Add ARMv8/AArch64 Crypto Extension implementation of SHA-256.
+	* cipher/Makefile.am: Add 'sha256-armv8-aarch64-ce.S'.
+	* cipher/sha256-armv8-aarch64-ce.S: New.
+	* cipher/sha256-armv8-aarch32-ce.S: Move round macros to correct
+	section.
+	* cipher/sha256.c (USE_ARM_CE): Enable on ARMv8/AArch64.
+	* configure.ac: Add 'sha256-armv8-aarch64-ce.lo'; Swap places for
+	'sha512-arm.lo' and 'sha256-armv8-aarch32-ce.lo'.
+
+	Add ARMv8/AArch64 Crypto Extension implementation of SHA-1.
+	* cipher/Makefile.am: Add 'sha1-armv8-aarch64-ce.S'.
+	* cipher/sha1-armv8-aarch64-ce.S: New.
+	* cipher/sha1.c (USE_ARM_CE): Enable on ARMv8/AArch64.
+	* configure.ac: Add 'sha1-armv8-aarch64-ce.lo'.
+
+2016-09-04  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Add AArch64 assembly implementation of AES.
+	* cipher/Makefile.am: Add 'rijndael-aarch64.S'.
+	* cipher/rijndael-aarch64.S: New.
+	* cipher/rijndael-internal.h: Enable USE_ARM_ASM if __AARCH64EL__ and
+	HAVE_COMPATIBLE_GCC_AARCH64_PLATFORM_AS defined.
+	* configure.ac (gcry_cv_gcc_aarch64_platform_as_ok): New check.
+	[host=aarch64]: Add 'rijndael-aarch64.lo'.
+
 2016-08-17  Werner Koch  <wk@gnupg.org>
 
 	Release 1.7.3.
