@@ -6,7 +6,7 @@
 #
 Name     : libgcrypt
 Version  : 1.7.6
-Release  : 20
+Release  : 21
 URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.6.tar.bz2
 Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.6.tar.bz2
 Source99 : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.6.tar.bz2.sig
