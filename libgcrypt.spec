@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x249B39D24F25E3B6 (dshaw@jabberwocky.com)
 #
 Name     : libgcrypt
-Version  : 1.7.7
-Release  : 22
-URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.7.tar.gz
-Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.7.tar.gz
-Source99 : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.7.tar.gz.sig
+Version  : 1.7.8
+Release  : 23
+URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.8.tar.gz
+Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.8.tar.gz
+Source99 : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.8.tar.gz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 LGPL-2.0+ LGPL-2.1
@@ -84,9 +84,9 @@ lib32 components for the libgcrypt package.
 
 
 %prep
-%setup -q -n libgcrypt-1.7.7
+%setup -q -n libgcrypt-1.7.8
 pushd ..
-cp -a libgcrypt-1.7.7 build32
+cp -a libgcrypt-1.7.8 build32
 popd
 
 %build
@@ -94,7 +94,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1496413289
+export SOURCE_DATE_EPOCH=1498743644
 %configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20" --disable-large-data-tests
 make V=1  %{?_smp_mflags}
 
@@ -107,7 +107,7 @@ export LDFLAGS="$LDFLAGS -m32"
 make V=1  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1496413289
+export SOURCE_DATE_EPOCH=1498743644
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -148,9 +148,9 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libgcrypt.so.20
-/usr/lib64/libgcrypt.so.20.1.7
+/usr/lib64/libgcrypt.so.20.1.8
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libgcrypt.so.20
-/usr/lib32/libgcrypt.so.20.1.7
+/usr/lib32/libgcrypt.so.20.1.8
