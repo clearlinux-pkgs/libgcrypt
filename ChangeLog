@@ -1,3 +1,88 @@
+2017-08-27  Werner Koch  <wk@gnupg.org>
+
+	Release 1.8.1.
+	+ commit 80fd8615048c3897b91a315cca22ab139b056ccd
+	* configure.ac: Set LT version to C22/A2/R1.
+
+2017-08-27  NIIBE Yutaka  <gniibe@fsij.org>
+
+	ecc: Add input validation for X25519.
+	+ commit bf76acbf0da6b0f245e491bec12c0f0a1b5be7c9
+	* cipher/ecc.c (ecc_decrypt_raw): Add input validation.
+	* mpi/ec.c (ec_p_init): Use scratch buffer for bad points.
+	(_gcry_mpi_ec_bad_point): New.
+
+2017-08-07  Marcus Brinkmann  <marcus.brinkmann@ruhr-uni-bochum.de>
+
+	cipher: Add OID for SHA384WithECDSA.
+	+ commit a7bd2cbd3eabda88fb3cac5cbc13c21c97a7b315
+	* cipher/sha512.c (oid_spec_sha384): Add SHA384WithECDSA.
+
+2017-08-02  Werner Koch  <wk@gnupg.org>
+
+	tests: Fix a printf glitch for a Windows test.
+	+ commit df1e221b3012e96bbffbc7d5fd70836a9ae1cc19
+	* tests/t-convert.c (check_formats): Fix print format glitch on
+	Windows.
+	* tests/t-ed25519.c: Typo fix.
+
+	tests: Add benchmarking option to tests/random.
+	+ commit 21d0f068a721c022f955084c28304934fd198c5e
+	* tests/random.c: Always include unistd.h.
+	(prepend_srcdir): New.
+	(run_benchmark): New.
+	(main): Add options --benchmark and --with-seed-file.  Print whetehr
+	JENT has been used.
+	* tests/t-common.h (split_fields_colon): New. Taken from GnuPG.
+	License of that code changed to LGPLv2.1.
+
+	random: Add more bytes to the pool in addition to the seed file.
+	+ commit eea36574f37830a6a80b4fad884825e815b2912f
+	* random/random-csprng.c (read_seed_file): Read 128 or 32 butes
+	depending on whether we have the Jitter RNG.
+
+2017-08-01  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Add script to run basic tests with all supported HWF combinations.
+	+ commit 94a92a3db909aef0ebcc009c2d7f5a2663e99004
+	* tests/basic_all_hwfeature_combinations.sh: New.
+	* tests/Makefile.am: Add basic_all_hwfeature_combinations.sh.
+
+2017-07-29  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Fix return value type for _gcry_md_extract.
+	+ commit cf1528e7f2761774d06ace0de48f39c96b52dc4f
+	* src/gcrypt-int.h (_gcry_md_extract): Use gpg_err_code_t instead of
+	gpg_error_t for internal function return type.
+
+	Fix building AArch32 CE implementations when target is ARMv6 arch.
+	+ commit 4a7aa30ae9f3ce798dd886c2f2d4164c43027748
+	* cipher/cipher-gcm-armv8-aarch32-ce.S: Select ARMv8 architecure.
+	* cipher/rijndael-armv8-aarch32-ce.S: Ditto.
+	* cipher/sha1-armv8-aarch32-ce.S: Ditto.
+	* cipher/sha256-armv8-aarch32-ce.S: Ditto.
+	* configure.ac (gcry_cv_gcc_inline_asm_aarch32_crypto): Ditto.
+
+2017-07-25  NIIBE Yutaka  <gniibe@fsij.org>
+
+	sexp: Add fall through annotation.
+	+ commit b7cd44335d9cde43be6f693dca6399ed0762649c
+	* src/dumpsexp.c (parse_and_print): It's fall through.
+
+2017-07-24  Werner Koch  <wk@gnupg.org>
+
+	random: Fix the command line munging for jitterbase.
+	+ commit ac39522ab08fcd2483edc223334c6ab9d19e91f3
+	* random/Makefile.am (o_flag_munging): Make the first sed term also
+	global.
+
+2017-07-19  NIIBE Yutaka  <gniibe@fsij.org>
+
+	Remove byte order mark.
+	+ commit 1d8e4c2c3a7d0a4154caf5bd720a9a0b04179390
+	* random/jitterentropy-base.c, random/jitterentropy.h: Remove
+	byte order mark.
+
 2017-07-18  Werner Koch  <wk@gnupg.org>
 
 	Release 1.8.0.

@@ -5,14 +5,14 @@
 # Source0 file verified with key 0x249B39D24F25E3B6 (dshaw@jabberwocky.com)
 #
 Name     : libgcrypt
-Version  : 1.8.0
-Release  : 24
-URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.0.tar.gz
-Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.0.tar.gz
-Source99 : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.0.tar.gz.sig
+Version  : 1.8.1
+Release  : 25
+URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.1.tar.gz
+Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.1.tar.gz
+Source99 : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.1.tar.gz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
-License  : GPL-2.0 LGPL-2.0+ LGPL-2.1
+License  : BSD-3-Clause GPL-2.0 LGPL-2.0+ LGPL-2.1
 Requires: libgcrypt-bin
 Requires: libgcrypt-lib
 Requires: libgcrypt-doc
@@ -84,9 +84,9 @@ lib32 components for the libgcrypt package.
 
 
 %prep
-%setup -q -n libgcrypt-1.8.0
+%setup -q -n libgcrypt-1.8.1
 pushd ..
-cp -a libgcrypt-1.8.0 build32
+cp -a libgcrypt-1.8.1 build32
 popd
 
 %build
@@ -94,7 +94,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1500405193
+export SOURCE_DATE_EPOCH=1503880011
 %configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20" --disable-large-data-tests
 make V=1  %{?_smp_mflags}
 
@@ -107,7 +107,7 @@ export LDFLAGS="$LDFLAGS -m32"
 make V=1  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1500405193
+export SOURCE_DATE_EPOCH=1503880011
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -148,9 +148,9 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libgcrypt.so.20
-/usr/lib64/libgcrypt.so.20.2.0
+/usr/lib64/libgcrypt.so.20.2.1
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libgcrypt.so.20
-/usr/lib32/libgcrypt.so.20.2.0
+/usr/lib32/libgcrypt.so.20.2.1
