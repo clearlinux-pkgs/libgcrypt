@@ -11,10 +11,6 @@ Configure miss: whether GCC assembler is compatible for ARMv8/Aarch64 assembly i
 Configure miss: _ prefix in compiled symbols
 Configure miss: whether default calling convention is 'ms_abi'
 Configure miss: whether mlock is broken
-Configure miss: i686-generic-linux-gnu-objdump
-Configure miss: i686-generic-linux-gnu-dlltool
-Configure miss: i686-generic-linux-gnu-strip
-Configure miss: i686-generic-linux-gnu-mt
 Configure miss: i686-generic-linux-gnu-windres
 Configure miss: whether the experimental random daemon is requested
 Configure miss: whether memory guard is requested

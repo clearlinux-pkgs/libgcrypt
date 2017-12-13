@@ -1,3 +1,41 @@
+2017-12-13  Werner Koch  <wk@gnupg.org>
+
+	Release 1.8.2.
+	+ commit eb84e429950b6a61c00112e70a584940c1d352e4
+
+
+2017-11-24  Werner Koch  <wk@gnupg.org>
+
+	sexp: Avoid a fatal error in case of ENOMEM in called functions.
+	+ commit 59df8d6295426d0a9cf7646c381df2ea29fdb8c5
+	* src/sexp.c (do_vsexp_sscan): Replace BUG() by a proper error
+	return.  Replace sprintf by snprintf.
+	(convert_to_hex): Replace sprintf by snprintf.
+	(convert_to_string): Ditto.
+	(_gcry_sexp_sprint): Ditto.
+
+2017-11-23  Werner Koch  <wk@gnupg.org>
+
+	api: Add auto expand secmem feature.
+	+ commit f4582f8c429f22b18f8ca8a40660a91d721f5c96
+	* src/global.c (_gcry_vcontrol): Implement control value 78.
+	* src/secmem.c (auto_expand): New var.
+	(_gcry_secmem_set_auto_expand): New.
+	(_gcry_secmem_malloc_internal): Act upon AUTO_EXPAND.
+
+2017-11-14  NIIBE Yutaka  <gniibe@fsij.org>
+
+	tests: Add HAVE_MMAP check for MinGW.
+	+ commit 334e1a1cfc8f59db765a0bff0ca29090aa11b0f6
+	* tests/t-secmem.c (main): Conditionalize with HAVE_MMAP.
+
+2017-11-09  NIIBE Yutaka  <gniibe@fsij.org>
+
+	Fix secmem test for machine with larger page.
+	+ commit da127f7505ff7681fc9dbfbf332121d2998e88aa
+	* tests/t-secmem.c (main): Detect page size and setup chunk size.
+	* src/secmem.c (init_pool): Simplify the expression.
+
 2017-08-27  Werner Koch  <wk@gnupg.org>
 
 	Release 1.8.1.
