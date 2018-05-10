@@ -6,7 +6,7 @@
 #
 Name     : libgcrypt
 Version  : 1.8.2
-Release  : 28
+Release  : 29
 URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.2.tar.gz
 Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.2.tar.gz
 Source99 : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.2.tar.gz.sig
