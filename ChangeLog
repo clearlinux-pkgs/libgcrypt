@@ -1,3 +1,104 @@
+2018-06-13  Werner Koch  <wk@gnupg.org>
+
+	Release 1.8.3.
+	+ commit 5600d2d6b23640b0114655214f18959ee81fe58e
+
+
+2018-06-13  NIIBE Yutaka  <gniibe@fsij.org>
+
+	ecc: Add blinding for ECDSA.
+	+ commit 9be06c6b2e5c96edf40e566bbf51d44c4d46fb07
+	* cipher/ecc-ecdsa.c (_gcry_ecc_ecdsa_sign): Blind secret D with
+	randomized nonce B.
+
+2018-06-11  Werner Koch  <wk@gnupg.org>
+
+	ecc: Improve gcry_mpi_ec_curve_point.
+	+ commit 846f8fe8b3be6d235592db184361df1bc2b07a8a
+	* mpi/ec.c (_gcry_mpi_ec_curve_point): Check range of coordinates.
+	* tests/t-mpi-point.c (point_on_curve): New.
+
+	mpi: New internal function _gcry_mpi_cmpabs.
+	+ commit 54620a27f4503e703e219e6e11c4be14ce4e3d35
+	* mpi/mpi-cmp.c (_gcry_mpi_cmp): Factor out to ...
+	(do_mpi_cmp): New.  Add arg absmode.
+	(_gcry_mpi_cmpabs): New.
+	* src/gcrypt-int.h (mpi_cmpabs): New macro.
+
+	(cherry picked from commit 6606ae44e0de1069b29dd4215ee9748280940e1b)
+
+2018-04-29  Werner Koch  <wk@gnupg.org>
+
+	build: Convince gcc not to delete NULL ptr checks.
+	+ commit 1a0289daa408773e1a6cefb2562288245f49651c
+	* configure.ac: Try to use -fno-delete-null-pointer-checks.
+
+	(cherry picked from commit 61dbb7c08ab11c10060e193b52e3e1d2ec6dd062)
+
+	prime: Avoid rare assertion failure in gcry_prime_check.
+	+ commit c5bed9df96337b1553cdcd4a85eec10e78b4d14a
+	* cipher/primegen.c (is_prime): Don't fail on the assert X > 1.
+
+2018-04-17  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Make BMI2 inline assembly check more robust.
+	+ commit 22db6237de00cafb85c0112073b55d0d750e6b03
+	* configure.ac (gcry_cv_gcc_inline_asm_bmi2): New assembly test.
+
+2018-04-17  Stephan Mueller  <smueller@chronox.de>
+
+	AES-KW: fix in-place encryption.
+	+ commit bbf88f0e9d481486ceca079e2611e84db8d039c7
+	* cipher/cipher-aeswrap.c: move memmove call before KW IV setting
+
+2018-04-17  Werner Koch  <wk@gnupg.org>
+
+	mpi: Fix for buidling for MIPS64 with Clang.
+	+ commit a0e016e29409ccd78966a5eb82dea236ad44d9c9
+	* mpi/longlong.h [MIPS64][__clang__]: Use the C version like we
+	already do for 32 bit MIPS.
+
+2018-04-17  NIIBE Yutaka  <gniibe@fsij.org>
+
+	hmac: Use xtrymalloc.
+	+ commit 06fdc074eb29faf584ffd13feea4c063936446fb
+	* src/hmac256.c (_gcry_hmac256_new): Use xtrymalloc.
+	(_gcry_hmac256_file): Likewise.
+
+	random: Protect another use of jent_rng_collector.
+	+ commit 0da4a237661cd273303ae6baaaba2d9f6292b990
+	* random/rndjent.c (_gcry_rndjent_get_version): Lock the access.
+
+	(cherry picked from commit 0de2a22fcf6607d0aecb550feefa414cee3731b2)
+
+2018-04-17  Martin Storsjö  <martin@martin.st>
+
+	random: Don't assume that _WIN64 implies x86_64.
+	+ commit e1695a8f6ca1135d777450cf9ce64628b0778ccb
+	* random/rndw32.c: Change _WIN64 ifdef into __x86_64__.
+
+2018-04-17  Jussi Kivilinna  <jussi.kivilinna@iki.fi>
+
+	Improve constant-time buffer compare.
+	+ commit 4e11e9d988181cf9cd87c7c86fa8e7a0f643a573
+	* cipher/bufhelp.h (buf_eq_const): Rewrite logic.
+
+	Fix incorrect counter overflow handling for GCM.
+	+ commit 0a391b259adcd7ea734dc03c2048a135e018166d
+	* cipher/cipher-gcm.c (gcm_ctr_encrypt): New function to handle
+	32-bit CTR increment for GCM.
+	(_gcry_cipher_gcm_encrypt, _gcry_cipher_gcm_decrypt): Do not use
+	generic CTR implementation directly, use gcm_ctr_encrypt instead.
+	* tests/basic.c (_check_gcm_cipher): Add test-vectors for 32-bit
+	CTR overflow.
+	(check_gcm_cipher): Add 'split input to 15 bytes and 17 bytes'
+	test-runs.
+
+	doc: fix double "See" in front of reference.
+	+ commit c114ffd6da837e7aace318e37bbcf9325dd985b7
+	* doc/gcrypt.texi: Change @xref to @ref when text already has 'see' in
+	the front.
+
 2017-12-13  Werner Koch  <wk@gnupg.org>
 
 	Release 1.8.2.

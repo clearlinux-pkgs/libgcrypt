@@ -3,6 +3,7 @@ Configure miss: whether memory guard is requested
 Configure miss: whether to run large data tests
 Configure miss: whether use of capabilities is requested
 Configure miss: whether a HMAC binary check is requested
+Configure miss: whether a -O flag munging is requested
 Configure miss: byte typedef
 Configure miss: u16 typedef
 Configure miss: u32 typedef
@@ -17,6 +18,7 @@ Configure miss: whether memory guard is requested
 Configure miss: whether to run large data tests
 Configure miss: whether use of capabilities is requested
 Configure miss: whether a HMAC binary check is requested
+Configure miss: whether a -O flag munging is requested
 Configure miss: byte typedef
 Configure miss: u16 typedef
 Configure miss: u32 typedef
