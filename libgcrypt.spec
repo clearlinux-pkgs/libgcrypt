@@ -5,18 +5,18 @@
 # Source0 file verified with key 0x249B39D24F25E3B6
 #
 Name     : libgcrypt
-Version  : 1.8.3
-Release  : 30
-URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.3.tar.gz
-Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.3.tar.gz
-Source99 : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.3.tar.gz.sig
+Version  : 1.8.4
+Release  : 31
+URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz
+Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz
+Source99 : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 LGPL-2.0+ LGPL-2.1
-Requires: libgcrypt-bin
-Requires: libgcrypt-lib
-Requires: libgcrypt-license
-Requires: libgcrypt-man
+Requires: libgcrypt-bin = %{version}-%{release}
+Requires: libgcrypt-lib = %{version}-%{release}
+Requires: libgcrypt-license = %{version}-%{release}
+Requires: libgcrypt-man = %{version}-%{release}
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -33,8 +33,8 @@ Version 1.8
 %package bin
 Summary: bin components for the libgcrypt package.
 Group: Binaries
-Requires: libgcrypt-license
-Requires: libgcrypt-man
+Requires: libgcrypt-license = %{version}-%{release}
+Requires: libgcrypt-man = %{version}-%{release}
 
 %description bin
 bin components for the libgcrypt package.
@@ -43,9 +43,9 @@ bin components for the libgcrypt package.
 %package dev
 Summary: dev components for the libgcrypt package.
 Group: Development
-Requires: libgcrypt-lib
-Requires: libgcrypt-bin
-Provides: libgcrypt-devel
+Requires: libgcrypt-lib = %{version}-%{release}
+Requires: libgcrypt-bin = %{version}-%{release}
+Provides: libgcrypt-devel = %{version}-%{release}
 
 %description dev
 dev components for the libgcrypt package.
@@ -54,9 +54,9 @@ dev components for the libgcrypt package.
 %package dev32
 Summary: dev32 components for the libgcrypt package.
 Group: Default
-Requires: libgcrypt-lib32
-Requires: libgcrypt-bin
-Requires: libgcrypt-dev
+Requires: libgcrypt-lib32 = %{version}-%{release}
+Requires: libgcrypt-bin = %{version}-%{release}
+Requires: libgcrypt-dev = %{version}-%{release}
 
 %description dev32
 dev32 components for the libgcrypt package.
@@ -65,7 +65,7 @@ dev32 components for the libgcrypt package.
 %package doc
 Summary: doc components for the libgcrypt package.
 Group: Documentation
-Requires: libgcrypt-man
+Requires: libgcrypt-man = %{version}-%{release}
 
 %description doc
 doc components for the libgcrypt package.
@@ -74,7 +74,7 @@ doc components for the libgcrypt package.
 %package lib
 Summary: lib components for the libgcrypt package.
 Group: Libraries
-Requires: libgcrypt-license
+Requires: libgcrypt-license = %{version}-%{release}
 
 %description lib
 lib components for the libgcrypt package.
@@ -83,7 +83,7 @@ lib components for the libgcrypt package.
 %package lib32
 Summary: lib32 components for the libgcrypt package.
 Group: Default
-Requires: libgcrypt-license
+Requires: libgcrypt-license = %{version}-%{release}
 
 %description lib32
 lib32 components for the libgcrypt package.
@@ -106,9 +106,9 @@ man components for the libgcrypt package.
 
 
 %prep
-%setup -q -n libgcrypt-1.8.3
+%setup -q -n libgcrypt-1.8.4
 pushd ..
-cp -a libgcrypt-1.8.3 build32
+cp -a libgcrypt-1.8.4 build32
 popd
 
 %build
@@ -116,7 +116,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1528896488
+export SOURCE_DATE_EPOCH=1540742796
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -130,6 +130,7 @@ make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="$ASFLAGS --32"
 export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
 export LDFLAGS="$LDFLAGS -m32"
@@ -138,12 +139,12 @@ export LDFLAGS="$LDFLAGS -m32"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1528896488
+export SOURCE_DATE_EPOCH=1540742796
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/libgcrypt
-cp COPYING.LIB %{buildroot}/usr/share/doc/libgcrypt/COPYING.LIB
-cp COPYING %{buildroot}/usr/share/doc/libgcrypt/COPYING
-cp LICENSES %{buildroot}/usr/share/doc/libgcrypt/LICENSES
+mkdir -p %{buildroot}/usr/share/package-licenses/libgcrypt
+cp COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/COPYING
+cp COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/COPYING.LIB
+cp LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/LICENSES
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -182,19 +183,19 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libgcrypt.so.20
-/usr/lib64/libgcrypt.so.20.2.3
+/usr/lib64/libgcrypt.so.20.2.4
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libgcrypt.so.20
-/usr/lib32/libgcrypt.so.20.2.3
+/usr/lib32/libgcrypt.so.20.2.4
 
 %files license
-%defattr(-,root,root,-)
-/usr/share/doc/libgcrypt/COPYING
-/usr/share/doc/libgcrypt/COPYING.LIB
-/usr/share/doc/libgcrypt/LICENSES
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/libgcrypt/COPYING
+/usr/share/package-licenses/libgcrypt/COPYING.LIB
+/usr/share/package-licenses/libgcrypt/LICENSES
 
 %files man
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 /usr/share/man/man1/hmac256.1

@@ -1,3 +1,64 @@
+2018-10-26  Werner Koch  <wk@gnupg.org>
+
+	Release 1.8.4.
+	+ commit 93775172713c00c363187b5d6a88895b04ac7c8e
+
+
+2018-10-26  Daniel Kahn Gillmor  <dkg@fifthhorseman.net>
+
+	random: use getrandom() on Linux where available.
+	+ commit 0973c3f9ee7a9ad7c97b77849ed33ecd6789c787
+	* random/rndlinux.c (_gcry_rndlinux_gather_random): use the
+	getrandom() syscall on Linux if it exists, regardless of what kind of
+	entropy was requested.
+
+2018-10-26  Werner Koch  <wk@gnupg.org>
+
+	random: Make sure to re-open /dev/random after a fork.
+	+ commit 60885655756dd0427872b8f01c06da14eab5af70
+	* random/rndlinux.c (_gcry_rndlinux_gather_random): Detect fork and
+	re-open devices.
+
+	primes: Avoid leaking bits of the prime test to pageable memory.
+	+ commit 5b1d022293c5779b1150a7653cce4e3bf494a07c
+	* cipher/primegen.c (gen_prime): Allocate MODS in secure memory.
+
+2018-10-24  Werner Koch  <wk@gnupg.org>
+
+	build: Add release make target.
+	+ commit 99a5babfd1e759310db8ab8b11d182f2e139dfb1
+	* Makefile.am (release, sign-release): New targets.
+
+	(cherry picked from commit 03bb25ee7ed6f1076bf788ab981ca68672880daa)
+
+	Fix memory leak in secmem in out of core conditions.
+	+ commit abd267bf239345ceae5c0de239d1530b427a53a1
+	* src/secmem.c (_gcry_secmem_malloc_internal): Release pool descriptor
+	if the pool could not be allocated.
+
+	ecc: Fix memory leak in the error case of ecc_encrypt_raw.
+	+ commit 60224352f4de1189e0076c6172886dc787a1e6e6
+	* cipher/ecc.c (ecc_encrypt_raw): Add proper error cleanup in the main
+	block.
+
+	ecc: Fix possible memory leakage in parameter check of eddsa.
+	+ commit 347987d4cf29b6a611b7fafa14fddeb50c0651d2
+	* cipher/ecc-eddsa.c (_gcry_ecc_eddsa_verify): Fix mem leak.
+
+	ecc: Fix potential unintended freeing of an internal param.
+	+ commit be68b3ee4fd1f85edc95eaad11c8fd52ccd27ccd
+	* cipher/ecc-curves.c (_gcry_ecc_get_mpi): Fix c+p error
+
+	sexp: Fix uninitialized use of a var in the error case.
+	+ commit 8cc7cac82ec2087c3e1ece56dbd12855a383f090
+	* src/sexp.c (_gcry_sexp_vextract_param): Initialize L1.
+
+2018-06-19  Will Dietz  <w@wdtz.org>
+
+	random: Fix hang of _gcry_rndjent_get_version.
+	+ commit 20c034865f2dd15ce2871385b6e29c15d1570539
+	* random/rndjent.c (_gcry_rndjent_get_version): Move locking.
+
 2018-06-13  Werner Koch  <wk@gnupg.org>
 
 	Release 1.8.3.
