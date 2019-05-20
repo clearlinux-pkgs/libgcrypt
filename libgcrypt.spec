@@ -6,7 +6,7 @@
 #
 Name     : libgcrypt
 Version  : 1.8.4
-Release  : 33
+Release  : 34
 URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz
 Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz
 Source99 : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz.sig
@@ -24,6 +24,7 @@ BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : libgpg-error-dev
 BuildRequires : libgpg-error-dev32
+BuildRequires : libgpg-error-extras
 
 %description
 Libgcrypt - The GNU Crypto Library
@@ -34,7 +35,6 @@ Version 1.8
 Summary: bin components for the libgcrypt package.
 Group: Binaries
 Requires: libgcrypt-license = %{version}-%{release}
-Requires: libgcrypt-man = %{version}-%{release}
 
 %description bin
 bin components for the libgcrypt package.
@@ -46,6 +46,7 @@ Group: Development
 Requires: libgcrypt-lib = %{version}-%{release}
 Requires: libgcrypt-bin = %{version}-%{release}
 Provides: libgcrypt-devel = %{version}-%{release}
+Requires: libgcrypt = %{version}-%{release}
 
 %description dev
 dev components for the libgcrypt package.
@@ -116,7 +117,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1541118085
+export SOURCE_DATE_EPOCH=1558376367
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -130,16 +132,16 @@ make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export ASFLAGS="$ASFLAGS --32"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-export LDFLAGS="$LDFLAGS -m32"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 %configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20 des" --disable-large-data-tests \
 --disable-O-flag-munging   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1541118085
+export SOURCE_DATE_EPOCH=1558376367
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libgcrypt
 cp COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/COPYING
