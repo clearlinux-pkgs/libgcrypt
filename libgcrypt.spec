@@ -7,9 +7,9 @@
 Name     : libgcrypt
 Version  : 1.8.4
 Release  : 33
-URL      : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz
-Source0  : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz
-Source99 : ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz.sig
+URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz
+Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz
+Source99 : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 LGPL-2.0+ LGPL-2.1
