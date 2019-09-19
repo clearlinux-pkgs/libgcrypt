@@ -6,7 +6,7 @@
 #
 Name     : libgcrypt
 Version  : 1.8.5
-Release  : 35
+Release  : 36
 URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.5.tar.gz
 Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.5.tar.gz
 Source1 : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.5.tar.gz.sig
@@ -117,7 +117,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567096166
+export SOURCE_DATE_EPOCH=1568862659
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -133,15 +133,15 @@ make  %{?_smp_mflags}
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20 des" --disable-large-data-tests \
 --disable-O-flag-munging   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1567096166
+export SOURCE_DATE_EPOCH=1568862659
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libgcrypt
 cp COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/COPYING
@@ -170,7 +170,7 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
+/usr/include/gcrypt.h
 /usr/lib64/libgcrypt.so
 /usr/lib64/pkgconfig/libgcrypt.pc
 /usr/share/aclocal/*.m4
