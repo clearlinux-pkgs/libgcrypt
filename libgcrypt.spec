@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x249B39D24F25E3B6
 #
 Name     : libgcrypt
-Version  : 1.8.5
-Release  : 38
-URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.5.tar.gz
-Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.5.tar.gz
-Source1 : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.5.tar.gz.sig
+Version  : 1.8.6
+Release  : 39
+URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.6.tar.gz
+Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.6.tar.gz
+Source1  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.6.tar.gz.sig
 Summary  : General purpose cryptographic library
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 LGPL-2.0+ LGPL-2.1
@@ -107,10 +107,10 @@ man components for the libgcrypt package.
 
 
 %prep
-%setup -q -n libgcrypt-1.8.5
-cd %{_builddir}/libgcrypt-1.8.5
+%setup -q -n libgcrypt-1.8.6
+cd %{_builddir}/libgcrypt-1.8.6
 pushd ..
-cp -a libgcrypt-1.8.5 build32
+cp -a libgcrypt-1.8.6 build32
 popd
 
 %build
@@ -118,14 +118,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1573789477
+export SOURCE_DATE_EPOCH=1594060426
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
 export CXXFLAGS="$CXXFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20 des" --disable-large-data-tests \
 --disable-O-flag-munging
@@ -142,12 +142,12 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1573789477
+export SOURCE_DATE_EPOCH=1594060426
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libgcrypt
-cp %{_builddir}/libgcrypt-1.8.5/COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
-cp %{_builddir}/libgcrypt-1.8.5/COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
-cp %{_builddir}/libgcrypt-1.8.5/LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/7d3dbb318476dbd696485279e2aa0e9538ad3a0a
+cp %{_builddir}/libgcrypt-1.8.6/COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
+cp %{_builddir}/libgcrypt-1.8.6/COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
+cp %{_builddir}/libgcrypt-1.8.6/LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/7d3dbb318476dbd696485279e2aa0e9538ad3a0a
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -191,12 +191,12 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libgcrypt.so.20
-/usr/lib64/libgcrypt.so.20.2.5
+/usr/lib64/libgcrypt.so.20.2.6
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libgcrypt.so.20
-/usr/lib32/libgcrypt.so.20.2.5
+/usr/lib32/libgcrypt.so.20.2.6
 
 %files license
 %defattr(0644,root,root,0755)
