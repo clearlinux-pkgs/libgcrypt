@@ -24,6 +24,8 @@ libgcrypt.so.20:gcry_cipher_setkey
 libgcrypt.so.20:gcry_control
 libgcrypt.so.20:gcry_create_nonce
 libgcrypt.so.20:gcry_ctx_release
+libgcrypt.so.20:gcry_ecc_get_algo_keylen
+libgcrypt.so.20:gcry_ecc_mul_point
 libgcrypt.so.20:gcry_err_code_from_errno
 libgcrypt.so.20:gcry_err_code_to_errno
 libgcrypt.so.20:gcry_err_make_from_errno
@@ -103,6 +105,7 @@ libgcrypt.so.20:gcry_mpi_gcd
 libgcrypt.so.20:gcry_mpi_get_flag
 libgcrypt.so.20:gcry_mpi_get_nbits
 libgcrypt.so.20:gcry_mpi_get_opaque
+libgcrypt.so.20:gcry_mpi_get_ui
 libgcrypt.so.20:gcry_mpi_invm
 libgcrypt.so.20:gcry_mpi_is_neg
 libgcrypt.so.20:gcry_mpi_lshift

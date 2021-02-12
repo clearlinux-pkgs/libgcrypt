@@ -1,0 +1,46 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Patrick McCarty <patrick.mccarty@intel.com>
+Date: Fri, 12 Feb 2021 19:28:53 +0000
+Subject: [PATCH] Specify -O3 for func attribute override
+
+Starting with libgcrypt 1.9.0, the src/hwf-x86.c source file defines a
+macro named FORCE_FUNC_FRAME_POINTER that (for gcc >= 4.7.0) expands to
+a function attribute to override optimization options. This attribute is
+applied to a function, `is_cpuid_available()`, defined a few lines below
+the macro definition. The function attribute specifies a -f optimization
+option, "no-omit-frame-pointer", thus applying the
+`-fno-omit-frame-pointer` optimization specifically for the
+is_cpuid_available() function.
+
+However, gcc is failing to compile this source file for the 32-bit
+build, raising an ICE. The file is compiled successfully for 64-bit.
+
+I discovered a workaround by prepending an optimization *level* option
+for the function attribute. Specifically, I prepended `-O3`, the current
+option passed to gcc on the command line for libgcrypt 32-bit and 64-bit
+builds. Note that the syntax for setting that option in the function
+attribute is "O3".
+
+The root cause is unknown. The Clear Linux OS `gcc` package carries
+several patches that tweak optimization defaults, so perhaps they
+influence the behavior of specifying optimization overrides via function
+attributes.
+
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ src/hwf-x86.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/hwf-x86.c b/src/hwf-x86.c
+index 9a9ed6d3..ed5390ac 100644
+--- a/src/hwf-x86.c
++++ b/src/hwf-x86.c
+@@ -41,7 +41,7 @@
+ 
+ #if _GCRY_GCC_VERSION >= 40700 /* 4.7 */
+ # define FORCE_FUNC_FRAME_POINTER \
+-	__attribute__ ((optimize("no-omit-frame-pointer")))
++	__attribute__ ((optimize("O3","no-omit-frame-pointer")))
+ #else
+ # define FORCE_FUNC_FRAME_POINTER
+ #endif
