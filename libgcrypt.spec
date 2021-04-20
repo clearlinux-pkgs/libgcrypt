@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x528897B826403ADA
 #
 Name     : libgcrypt
-Version  : 1.9.2
-Release  : 42
-URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.2.tar.gz
-Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.2.tar.gz
-Source1  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.2.tar.gz.sig
+Version  : 1.9.3
+Release  : 43
+URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.3.tar.gz
+Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.3.tar.gz
+Source1  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.3.tar.gz.sig
 Summary  : General purpose cryptographic library
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 LGPL-2.0+ LGPL-2.1
@@ -108,11 +108,11 @@ man components for the libgcrypt package.
 
 
 %prep
-%setup -q -n libgcrypt-1.9.2
-cd %{_builddir}/libgcrypt-1.9.2
+%setup -q -n libgcrypt-1.9.3
+cd %{_builddir}/libgcrypt-1.9.3
 %patch1 -p1
 pushd ..
-cp -a libgcrypt-1.9.2 build32
+cp -a libgcrypt-1.9.3 build32
 popd
 
 %build
@@ -120,7 +120,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1613591036
+export SOURCE_DATE_EPOCH=1618895243
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -144,12 +144,12 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1613591036
+export SOURCE_DATE_EPOCH=1618895243
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libgcrypt
-cp %{_builddir}/libgcrypt-1.9.2/COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
-cp %{_builddir}/libgcrypt-1.9.2/COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
-cp %{_builddir}/libgcrypt-1.9.2/LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/be48085c6ea86d11e056ec9a2afe26940d2b95e1
+cp %{_builddir}/libgcrypt-1.9.3/COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
+cp %{_builddir}/libgcrypt-1.9.3/COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
+cp %{_builddir}/libgcrypt-1.9.3/LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/d4e3e69a49ec2136aeeec403b8647c8d23bd2349
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -193,17 +193,17 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libgcrypt.so.20
-/usr/lib64/libgcrypt.so.20.3.2
+/usr/lib64/libgcrypt.so.20.3.3
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libgcrypt.so.20
-/usr/lib32/libgcrypt.so.20.3.2
+/usr/lib32/libgcrypt.so.20.3.3
 
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
-/usr/share/package-licenses/libgcrypt/be48085c6ea86d11e056ec9a2afe26940d2b95e1
+/usr/share/package-licenses/libgcrypt/d4e3e69a49ec2136aeeec403b8647c8d23bd2349
 /usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
 
 %files man
