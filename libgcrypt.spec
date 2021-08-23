@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x528897B826403ADA
 #
 Name     : libgcrypt
-Version  : 1.9.3
-Release  : 44
-URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.3.tar.gz
-Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.3.tar.gz
-Source1  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.3.tar.gz.sig
+Version  : 1.9.4
+Release  : 45
+URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.4.tar.gz
+Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.4.tar.gz
+Source1  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.4.tar.gz.sig
 Summary  : General purpose cryptographic library
 Group    : Development/Tools
 License  : BSD-3-Clause GPL-2.0 LGPL-2.0+ LGPL-2.1
@@ -108,11 +108,11 @@ man components for the libgcrypt package.
 
 
 %prep
-%setup -q -n libgcrypt-1.9.3
-cd %{_builddir}/libgcrypt-1.9.3
+%setup -q -n libgcrypt-1.9.4
+cd %{_builddir}/libgcrypt-1.9.4
 %patch1 -p1
 pushd ..
-cp -a libgcrypt-1.9.3 build32
+cp -a libgcrypt-1.9.4 build32
 popd
 
 %build
@@ -120,16 +120,17 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1618895243
+export SOURCE_DATE_EPOCH=1629742644
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
-export FCFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
-export FFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
-%configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20 des" --disable-large-data-tests \
+export CFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
+export FCFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
+export FFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
+%configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20 des" \
+--disable-large-data-tests \
 --disable-O-flag-munging
 make  %{?_smp_mflags}
 
@@ -139,17 +140,18 @@ export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-%configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20 des" --disable-large-data-tests \
+%configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20 des" \
+--disable-large-data-tests \
 --disable-O-flag-munging   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1618895243
+export SOURCE_DATE_EPOCH=1629742644
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libgcrypt
-cp %{_builddir}/libgcrypt-1.9.3/COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
-cp %{_builddir}/libgcrypt-1.9.3/COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
-cp %{_builddir}/libgcrypt-1.9.3/LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/d4e3e69a49ec2136aeeec403b8647c8d23bd2349
+cp %{_builddir}/libgcrypt-1.9.4/COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
+cp %{_builddir}/libgcrypt-1.9.4/COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
+cp %{_builddir}/libgcrypt-1.9.4/LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/d4e3e69a49ec2136aeeec403b8647c8d23bd2349
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -193,12 +195,12 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libgcrypt.so.20
-/usr/lib64/libgcrypt.so.20.3.3
+/usr/lib64/libgcrypt.so.20.3.4
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libgcrypt.so.20
-/usr/lib32/libgcrypt.so.20.3.3
+/usr/lib32/libgcrypt.so.20.3.4
 
 %files license
 %defattr(0644,root,root,0755)
