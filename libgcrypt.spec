@@ -5,14 +5,14 @@
 # Source0 file verified with key 0x528897B826403ADA
 #
 Name     : libgcrypt
-Version  : 1.9.4
-Release  : 45
-URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.4.tar.gz
-Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.4.tar.gz
-Source1  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.4.tar.gz.sig
+Version  : 1.10.0
+Release  : 46
+URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.0.tar.gz
+Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.0.tar.gz
+Source1  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.0.tar.gz.sig
 Summary  : General purpose cryptographic library
 Group    : Development/Tools
-License  : BSD-3-Clause GPL-2.0 LGPL-2.0+ LGPL-2.1
+License  : GPL-2.0 LGPL-2.0+ LGPL-2.1 MIT
 Requires: libgcrypt-bin = %{version}-%{release}
 Requires: libgcrypt-info = %{version}-%{release}
 Requires: libgcrypt-lib = %{version}-%{release}
@@ -27,11 +27,12 @@ BuildRequires : libgpg-error-dev
 BuildRequires : libgpg-error-dev32
 BuildRequires : libgpg-error-extras
 Patch1: 0001-Specify-O3-for-func-attribute-override.patch
+Patch2: noopt.patch
 
 %description
 Libgcrypt - The GNU Crypto Library
 ------------------------------------
-Version 1.9
+Version 1.10
 
 %package bin
 Summary: bin components for the libgcrypt package.
@@ -108,11 +109,12 @@ man components for the libgcrypt package.
 
 
 %prep
-%setup -q -n libgcrypt-1.9.4
-cd %{_builddir}/libgcrypt-1.9.4
+%setup -q -n libgcrypt-1.10.0
+cd %{_builddir}/libgcrypt-1.10.0
 %patch1 -p1
+%patch2 -p1
 pushd ..
-cp -a libgcrypt-1.9.4 build32
+cp -a libgcrypt-1.10.0 build32
 popd
 
 %build
@@ -120,7 +122,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1629742644
+export SOURCE_DATE_EPOCH=1644342166
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -135,7 +137,7 @@ export CXXFLAGS="$CXXFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-
 make  %{?_smp_mflags}
 
 pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -146,17 +148,23 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1629742644
+export SOURCE_DATE_EPOCH=1644342166
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libgcrypt
-cp %{_builddir}/libgcrypt-1.9.4/COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
-cp %{_builddir}/libgcrypt-1.9.4/COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
-cp %{_builddir}/libgcrypt-1.9.4/LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/d4e3e69a49ec2136aeeec403b8647c8d23bd2349
+cp %{_builddir}/libgcrypt-1.10.0/COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
+cp %{_builddir}/libgcrypt-1.10.0/COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
+cp %{_builddir}/libgcrypt-1.10.0/LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/5bb6f1cd14b6ade7980587c1ecd9ac73e1dae570
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
@@ -195,17 +203,17 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libgcrypt.so.20
-/usr/lib64/libgcrypt.so.20.3.4
+/usr/lib64/libgcrypt.so.20.4.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libgcrypt.so.20
-/usr/lib32/libgcrypt.so.20.3.4
+/usr/lib32/libgcrypt.so.20.4.0
 
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
-/usr/share/package-licenses/libgcrypt/d4e3e69a49ec2136aeeec403b8647c8d23bd2349
+/usr/share/package-licenses/libgcrypt/5bb6f1cd14b6ade7980587c1ecd9ac73e1dae570
 /usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
 
 %files man
