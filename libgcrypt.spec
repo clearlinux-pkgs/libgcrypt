@@ -6,7 +6,7 @@
 #
 Name     : libgcrypt
 Version  : 1.10.1
-Release  : 47
+Release  : 48
 URL      : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.1.tar.gz
 Source0  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.1.tar.gz
 Source1  : https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.1.tar.gz.sig
@@ -122,15 +122,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1648494345
+export SOURCE_DATE_EPOCH=1664933933
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
-export FCFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
-export FFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition -fstack-protector-strong -fzero-call-used-regs=used "
+export CFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition "
+export FCFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition "
+export FFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=auto -fno-semantic-interposition "
 %configure --disable-static --enable-ciphers="cast5 aes twofish serpent rfc2268 seed camellia idea salsa20 gost28147 chacha20 des" \
 --disable-large-data-tests \
 --disable-O-flag-munging
@@ -148,12 +148,12 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1648494345
+export SOURCE_DATE_EPOCH=1664933933
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libgcrypt
-cp %{_builddir}/libgcrypt-1.10.1/COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d
-cp %{_builddir}/libgcrypt-1.10.1/COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2
-cp %{_builddir}/libgcrypt-1.10.1/LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/5bb6f1cd14b6ade7980587c1ecd9ac73e1dae570
+cp %{_builddir}/libgcrypt-%{version}/COPYING %{buildroot}/usr/share/package-licenses/libgcrypt/dfac199a7539a404407098a2541b9482279f690d || :
+cp %{_builddir}/libgcrypt-%{version}/COPYING.LIB %{buildroot}/usr/share/package-licenses/libgcrypt/0bf81afbc585fd8fa3a9267d33498831f5a5c9c2 || :
+cp %{_builddir}/libgcrypt-%{version}/LICENSES %{buildroot}/usr/share/package-licenses/libgcrypt/5bb6f1cd14b6ade7980587c1ecd9ac73e1dae570 || :
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
