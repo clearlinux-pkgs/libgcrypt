@@ -17,6 +17,8 @@ Configure miss: whether 'soft' HW feature bits are forced on
 Configure miss: whether 'soft' HW feature bits are forced on
 Configure miss: whether GCC assembler is compatible for ARMv8/Aarch64 assembly implementations
 Configure miss: whether GCC assembler is compatible for ARMv8/Aarch64 assembly implementations
+Configure miss: whether GCC assembler supports for CFI directives
+Configure miss: whether GCC assembler supports for CFI directives
 Configure miss: whether a -O flag munging is requested
 Configure miss: whether a -O flag munging is requested
 Configure miss: whether a HMAC binary check is requested
