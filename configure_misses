@@ -1,3 +1,6 @@
+Configure miss: _ prefix in compiled symbols
+Configure miss: _ prefix in compiled symbols
+Configure miss: _ prefix in compiled symbols
 Configure miss: broken alias attribute
 Configure miss: broken alias attribute
 Configure miss: broken alias attribute
@@ -11,6 +14,12 @@ Configure miss: explicit_memset
 Configure miss: explicit_memset
 Configure miss: explicit_memset
 Configure miss: i686-generic-linux-gnu-windres
+Configure miss: sys/sysctl.h
+Configure miss: sys/sysctl.h
+Configure miss: sys/sysctl.h
+Configure miss: sysctlbyname
+Configure miss: sysctlbyname
+Configure miss: sysctlbyname
 Configure miss: u16
 Configure miss: u16
 Configure miss: u16
@@ -26,24 +35,17 @@ Configure miss: whether 'soft' HW feature bits are forced on
 Configure miss: whether GCC assembler is compatible for ARMv8/Aarch64 assembly implementations
 Configure miss: whether GCC assembler is compatible for ARMv8/Aarch64 assembly implementations
 Configure miss: whether GCC assembler is compatible for ARMv8/Aarch64 assembly implementations
-Configure miss: whether GCC assembler supports for CFI directives
-Configure miss: whether GCC assembler supports for CFI directives
-Configure miss: whether GCC assembler supports for CFI directives
 Configure miss: whether a -O flag munging is requested
 Configure miss: whether a -O flag munging is requested
 Configure miss: whether a -O flag munging is requested
 Configure miss: whether a HMAC binary check is requested
 Configure miss: whether a HMAC binary check is requested
 Configure miss: whether a HMAC binary check is requested
-Configure miss: whether memory guard is requested
-Configure miss: whether memory guard is requested
-Configure miss: whether memory guard is requested
+Configure miss: whether default calling convention is 'ms_abi'
+Configure miss: whether default calling convention is 'ms_abi'
 Configure miss: whether mlock is broken
 Configure miss: whether mlock is broken
 Configure miss: whether mlock is broken
-Configure miss: whether the experimental random daemon is requested
-Configure miss: whether the experimental random daemon is requested
-Configure miss: whether the experimental random daemon is requested
 Configure miss: whether to run large data tests
 Configure miss: whether to run large data tests
 Configure miss: whether to run large data tests
