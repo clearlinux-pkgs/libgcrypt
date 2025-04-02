@@ -1,0 +1,1 @@
+export LDFLAGS="$LDFLAGS -Wl,-z,max-page-size=0x1000 -Wl,--compress-debug-sections=zstd"
